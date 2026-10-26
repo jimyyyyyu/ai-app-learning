@@ -110,6 +110,9 @@ try:
     check("12. raise", "没抛异常", "应该抛 ValueError")
 except ValueError:
     check("12. raise", "抛出了 ValueError", "抛出了 ValueError")
+except ZeroDivisionError:
+    # 还没取消注释 raise 那行时，会走到这里：题目未完成
+    check("12. raise", "没抛 ValueError（raise 那行还没取消注释）", "应该抛 ValueError")
 
 print()
 print("=" * 40)
