@@ -27,17 +27,17 @@ squares = [i * i for i in range(1, 11)]
 check("1. 列表推导式", squares, [1, 4, 9, 16, 25, 36, 49, 64, 81, 100])
 
 # 2. 索引：取第 3 个元素（提示：下标从 0 开始）
-third = squares[0]   # TODO：把 0 改成正确答案
+third = squares[2]   # TODO：把 0 改成正确答案
 check("2. 索引取值", third, 9)
 
 # 3. 切片：取最后 3 个元素（示例）
-last3 = squares[-3:]
+last3 = squares[-2:]
 check("3. 切片", last3, [64, 81, 100])
 
 # 4. 方法：给 nums 加一个 0，再排好序
 nums = [3, 1, 2]
 nums.append(0)   # TODO：这行是对的，照抄一遍加深记忆
-# nums.sort()    # TODO：取消这行的注释
+nums.sort()    # TODO：取消这行的注释
 check("4. append / sort", nums, [0, 1, 2, 3])
 
 print()
