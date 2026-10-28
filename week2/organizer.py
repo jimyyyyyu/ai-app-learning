@@ -51,9 +51,13 @@ def organize(folder: Path) -> None:
 def reset_demo() -> None:
     """把 demo_files 还原成乱放的状态，方便反复测试。
 
+    只还原"整理器自己的输出文件夹"（RULES 里的分类 + 其他），
+    绝不碰用户自己的文件夹（比如 旧文件夹）——这是验收标准要求的。
+
     读一遍这个函数，弄懂它在干什么（这是加分项）。
     """
-    for sub in [p for p in TARGET.iterdir() if p.is_dir()]:
+    output_names = set(RULES.values()) | {"其他"}
+    for sub in [p for p in TARGET.iterdir() if p.is_dir() and p.name in output_names]:
         for f in sub.iterdir():
             shutil.move(str(f), str(TARGET / f.name))
         sub.rmdir()

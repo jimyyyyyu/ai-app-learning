@@ -1,16 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-第 1 周实战：调用 DeepSeek 大模型 API —— 你的第一个 AI 程序
 
-使用前：
-1. 打开 https://platform.deepseek.com 注册，创建 API Key（只显示一次，请复制保存）
-2. 设置环境变量（PowerShell 里执行）：
-       $env:DEEPSEEK_API_KEY = "sk-你的key"
-3. 运行：
-       python hello_ai.py
-"""
+
 import os
 import requests
+import json
 
 API_KEY = os.environ.get("DEEPSEEK_API_KEY")
 URL = "https://api.deepseek.com/chat/completions"
@@ -37,6 +29,21 @@ def chat(messages):
     return resp.json()["choices"][0]["message"]["content"]
 
 
+def save_history(messages):
+    """退出时把对话历史存进文件。"""
+    with open("chat_history.json", "w", encoding="utf-8") as f:
+        json.dump(messages, f, ensure_ascii=False, indent=2)
+
+
+def load_history():
+    """启动时读回历史；没有文件就用全新人设。"""
+    try:
+        with open("chat_history.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return [{"role": "system", "content": "你是一个gay。"}]
+
+
 def main():
     print("=" * 42)
     print("你的第一个 AI 程序：命令行聊天机器人")
@@ -44,9 +51,7 @@ def main():
     print("=" * 42)
 
     # messages 是"对话历史"：发给模型的不是一句话，而是整个聊天记录
-    messages = [
-        {"role": "system", "content": "你是一个耐心友好的中文学习助手。"}
-    ]
+    messages = load_history()
 
     while True:
         try:
@@ -69,6 +74,8 @@ def main():
             continue
         print(f"AI：{reply}")
         messages.append({"role": "assistant", "content": reply})
+
+    save_history(messages)   # 循环结束后统一存盘（quit/Ctrl+C 都会走到这）
 
 
 if __name__ == "__main__":
